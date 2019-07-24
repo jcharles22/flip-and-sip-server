@@ -1,5 +1,6 @@
 const express = require('express')
 const CardService = require('./card-services')
+const AuthSerivce = require('../auth/auth-service')
 const { requireAuth } = require('../middleware/jwt-auth')
 
 const cardRouter = express.Router()
@@ -8,15 +9,47 @@ const bodyParser = express.json();
 
 cardRouter
   .route('/')
-  .get((req, res, next) => {
+  .get( bodyParser, (req, res, next) => {
     const knexInstance = req.app.get('db')
-    CardService.getAllCards(knexInstance)
+    let userId = req.get("userName")
+      CardService.getAllCards(knexInstance, userId)
       .then(cards => {
         res.json(cards)
       })
       .catch(next)
+     }
+  )
+
+  .patch(requireAuth, bodyParser, (req, res, next) => {
+    const { card_id, active, userName, deck_id } = req.body
+    let user_id = req.user.id
+    CardService.updateUser(
+      req.app.get('db'),
+      deck_id,
+      card_id,
+      user_id, 
+      active, 
+    )
+
+      .then(numRowsAffected => {
+        res.status(204).json({
+          updated: true
+        })
+      })
+      .catch(next)
   })
-  .post(requireAuth, jsonParser, (req, res, next) => {
+
+cardRouter
+    .route('/:userId')
+    .get(bodyParser, (req, res, next) =>{
+      console.log(req.get("user"))
+      res.send('ahoy')
+
+    })
+
+
+
+    .post(requireAuth, jsonParser, (req, res, next) => {
       const { card_title, card_desc, card_active } = req.body
       const newCard = {  card_title, card_desc, card_active }
       
@@ -31,23 +64,7 @@ cardRouter
            .json(card)
        })
   })
-  .patch(bodyParser, (req, res, next) => {
-    const { card_id, card_active } = req.body
-    const cardToUpdate = {   card_active }
-
-    CardService.updateUser(
-      req.app.get('db'),
-      card_id,
-      cardToUpdate
-    )
-
-      .then(numRowsAffected => {
-        res.status(204).json({
-          updated: true
-        })
-      })
-      .catch(next)
-  })
+    
 
 
 

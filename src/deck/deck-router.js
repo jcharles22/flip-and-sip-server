@@ -1,25 +1,20 @@
 const express = require('express')
 const DeckService = require('./deck-service')
-const { requireAuth } = require('../middleware/jwt-auth')
 
 const deckRouter = express.Router()
-const jsonParser = express.json()
-const bodyParser = express.json();
-
 deckRouter
   .route('/')
   .get((req, res, next) => {
     const knexInstance = req.app.get('db')
-    req.query
     DeckService.getDecks(knexInstance)
-
-        .then(decks => {
-            res.json(decks)
-        })
-      .catch(next)
+      .then(response => res.json(response))
+  
+  
+    })
+  .post((req, res, next) => {
+    const knexInstance = req.app.get('db')
+    DeckService.getCardsByDeckId(knexInstance)
+      .then(response => res.json(response))
   })
-
-
-
 
 module.exports = deckRouter
