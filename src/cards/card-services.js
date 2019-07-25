@@ -52,6 +52,11 @@ const CardService = {
              
              
          )
+     },
+
+     getStarterCards(knex){
+         return knex('deck_card_connection')
+         .where({'users':8})
      }
 }
 
