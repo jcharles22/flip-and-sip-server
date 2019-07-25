@@ -38,31 +38,38 @@ cardRouter
       })
       .catch(next)
   })
-
-cardRouter
-    .route('/:userId')
-    .get(bodyParser, (req, res, next) =>{
-      console.log(req.get("user"))
-      res.send('ahoy')
-
-    })
-
-
-
     .post(requireAuth, jsonParser, (req, res, next) => {
-      const { card_title, card_desc, card_active } = req.body
-      const newCard = {  card_title, card_desc, card_active }
-      
-     newCard.author = req.user.id
-      CardService.insertCard(
-         req.app.get('db'),
-         newCard
-       )
-       .then(card => {
-         res
-           .status(201)
-           .json(card)
-       })
+      let { card_title, card_desc, deck } = req.body
+      const newCard = {  card_title, card_desc,}
+      newCard.author = req.user.id
+      let card=[];
+      console.log(deck)
+        CardService.insertCard(
+          req.app.get('db'),
+          newCard
+       ) .then(cardId => {
+         return CardService.getAllUsersByIds(req.app.get('db'))
+          .then(users=> {
+              let card=[]
+              let counter = 0
+              deck.forEach((deck, count) => { 
+                
+                let deckId =parseInt(deck)
+                users.forEach((user, index)=> {
+                  return(
+                  card[counter]={users:user.id, card_id: cardId.card_id, deck_id:deckId}
+                  ,counter++
+                  )
+                })
+              })
+
+              console.log(card)
+              return CardService.updateDeck_card(req.app.get('db'), card)
+                .then(response=> res.status(204).send())
+          }).catch(next)
+
+       }) .then(response =>{return null})
+       .catch(next)
   })
     
 

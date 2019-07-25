@@ -10,6 +10,10 @@ const CardService = {
             .join('users', 'deck_card_connection.users', 'users.id')
         )
     },
+    getAllUsersByIds(knex){
+        return knex('users')
+        .select('id')
+    },
     getUserId(knex, id) {
         return knex('users')
             .where({id: id})
@@ -39,6 +43,16 @@ const CardService = {
             .update({active})
         )    
     },
+     updateDeck_card(knex, card){
+         return (
+             knex('deck_card_connection')
+             .insert(
+                card
+             )
+             
+             
+         )
+     }
 }
 
 module.exports = CardService;
