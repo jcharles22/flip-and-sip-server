@@ -7,10 +7,7 @@ const path = require('path')
 
 usersRouter
     .post('/', jsonBodyParser, (req, res, next) => {
-        console.log(req.body)
         const { password, user_name } = req.body
-        console.log('made it')
-        console.log(password, user_name)
         for (const field of ['user_name', 'password'])
             if (!req.body[field])
             return res.status(400).json({

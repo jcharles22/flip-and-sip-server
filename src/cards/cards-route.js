@@ -43,7 +43,6 @@ cardRouter
       const newCard = {  card_title, card_desc,}
       newCard.author = req.user.id
       let card=[];
-      console.log(deck)
         CardService.insertCard(
           req.app.get('db'),
           newCard
@@ -63,7 +62,6 @@ cardRouter
                 })
               })
 
-              console.log(card)
               return CardService.updateDeck_card(req.app.get('db'), card)
                 .then(response=> res.status(204).send())
           }).catch(next)

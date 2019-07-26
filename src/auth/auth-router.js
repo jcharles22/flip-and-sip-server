@@ -10,7 +10,6 @@ authRouter
     const loginUser = { user_name, password }
 
     for (const [key, value] of Object.entries(loginUser)) {
-    console.log(value)
       if (value == '')
         return res.status(400).json({
           error: ` `+ key + ` is missing`
