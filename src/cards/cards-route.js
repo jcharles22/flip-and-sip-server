@@ -10,6 +10,7 @@ const bodyParser = express.json();
 cardRouter
   .route('/')
   .get( bodyParser, (req, res, next) => {
+    console.log('a')
     const knexInstance = req.app.get('db')
     let userId = req.get("userName")
       CardService.getAllCards(knexInstance, userId)

@@ -9,7 +9,6 @@ const app = express();
 const authRouter = require('./auth/auth-router')
 const usersRouter = require('./users/users-router')
 const deckRouter = require('./deck/deck-router');
-const deckIdRouter = require('./deck-id-router/deck-id-router');
 
 const morganOption = (NODE_ENV === 'production')
     ? 'tiny'
@@ -22,7 +21,7 @@ app.use('/api/card', cardRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/deck', deckRouter);
-app.use('/api/deck/', deckIdRouter);
+
 
 app.get('/', (req, res) => {
     res.send('Hello, world!');
