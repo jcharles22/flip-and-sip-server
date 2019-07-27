@@ -49,7 +49,7 @@ cardRouter
           req.app.get('db'),
           newCard
        ) .then(cardId => {
-         console.log('cardId = '+ cardId )
+         console.log('cardId = '+ cardId)
           return CardService.getAllUsersByIds(req.app.get('db'))
             .then(users=> {
                 let card=[]
