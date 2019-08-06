@@ -11,7 +11,7 @@ cardRouter
   .route('/')
   .get( bodyParser, (req, res, next) => {
     const knexInstance = req.app.get('db')
-    let userId = req.get("userName")
+    let userId = req.get("userName") || 1
       CardService.getAllCards(knexInstance, userId)
       .then(cards => {
         res.json(cards)

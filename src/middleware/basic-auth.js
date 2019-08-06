@@ -30,7 +30,7 @@ function requireAuth(req, res, next) {
           next()
         })
     })
-    .catch(next)
+      .catch(next)
 }
 module.exports = {
   requireAuth,
